@@ -1,0 +1,994 @@
+
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101010">
+<title>JOSSIE® — Creative Lab</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --red:#f21e2b;
+  --bg:#101010;
+  --panel:#181818;
+  --white:#f4f1eb;
+  --muted:#9b9994;
+  --line:rgba(244,241,235,.15);
+  --soft:#242424;
+  --card:#171717;
+  --shadow:rgba(0,0,0,.4);
+  --display:"Space Grotesk",sans-serif;
+  --body:"Manrope",sans-serif;
+  --mono:"DM Mono",monospace;
+}
+[data-theme="light"]{
+  --bg:#f7f6f2;
+  --panel:#eeece6;
+  --white:#151515;
+  --muted:#77746e;
+  --line:rgba(0,0,0,.15);
+  --soft:#e4e1da;
+  --card:#fff;
+  --shadow:rgba(0,0,0,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:85px}
+body{background:var(--bg);color:var(--white);font-family:var(--body);overflow-x:hidden;transition:background .35s,color .35s}
+a{color:inherit;text-decoration:none}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(1240px,calc(100% - 64px));margin:auto}
+.mono,.eyebrow,.index{font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em}
+.eyebrow{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:10px}
+.eyebrow:before{content:"";width:7px;height:7px;background:var(--red);border-radius:50%;box-shadow:0 0 14px var(--red)}
+.btn{display:inline-flex;align-items:center;gap:22px;padding:15px 19px;border:1px solid var(--line);font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;transition:.3s;color:var(--white)}
+.btn.primary{background:var(--red);border-color:var(--red);color:white}
+.btn:hover{transform:translateY(-4px);border-color:var(--red)}
+.btn .arrow{font-size:17px}
+
+/* NAVEGACIÓN */
+.topbar{height:76px;position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font:700 21px var(--display);letter-spacing:-1.5px;white-space:nowrap}
+.brand span{color:var(--red)}
+.brand small{font:9px var(--mono);color:var(--muted);margin-left:9px;letter-spacing:.1em}
+.navlinks{display:flex;gap:25px;align-items:center}
+.navlinks a{font-size:11px;color:var(--muted);transition:.25s}
+.navlinks a:hover{color:var(--red)}
+.nav-actions{display:flex;align-items:center;gap:9px}
+.round-control{width:43px;height:43px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--white);display:grid;place-items:center;transition:.3s}
+.round-control:hover{border-color:var(--red);color:var(--red);transform:rotate(-8deg)}
+.round-control svg{width:20px;height:20px}
+.lang-control{font:500 10px var(--mono)}
+.nav-cta{border:1px solid var(--red);background:var(--red);color:white;padding:12px 15px;font:10px var(--mono);white-space:nowrap;transition:.3s}
+.nav-cta:hover{background:transparent;color:var(--red)}
+.menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--white);padding:9px 12px}
+
+/* INICIO */
+.hero{min-height:710px;display:grid;align-items:center;position:relative;padding:90px 0 105px;isolation:isolate}
+.hero:after{content:"";position:absolute;width:min(52vw,680px);height:min(52vw,680px);right:-7%;top:7%;border:1px solid rgba(242,30,43,.18);border-radius:50%;z-index:-1;box-shadow:0 0 0 55px rgba(242,30,43,.025),0 0 0 110px rgba(242,30,43,.018)}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero-copy{position:relative;z-index:2}
+.hero h1{font:700 clamp(64px,9.5vw,136px)/.82 var(--display);letter-spacing:-.095em;margin:34px 0 30px;text-transform:uppercase}
+.hero h1 .line{display:block}
+.hero h1 .outline{color:transparent;-webkit-text-stroke:1px var(--white)}
+.hero h1 .red{color:var(--red)}
+.hero-desc{max-width:440px;color:var(--muted);line-height:1.8;font-size:14px}
+.hero-actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.hero-art{height:490px;position:relative;display:grid;place-items:center}
+.orbit{position:absolute;width:370px;height:370px;border:1px solid var(--line);border-radius:50%;animation:spin 26s linear infinite}
+.orbit:before,.orbit:after{content:"";position:absolute;border:1px solid rgba(242,30,43,.35);border-radius:50%}
+.orbit:before{inset:35px}.orbit:after{inset:75px}
+.orbit-dot{position:absolute;top:38px;left:54px;width:13px;height:13px;border-radius:50%;background:var(--red);box-shadow:0 0 25px var(--red)}
+.core{width:245px;height:300px;position:relative;z-index:2;background:linear-gradient(145deg,var(--soft),var(--bg) 65%);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between;padding:19px;transform:rotate(-7deg);box-shadow:22px 28px 70px var(--shadow)}
+.core:before{content:"";position:absolute;inset:9px;border:1px solid rgba(242,30,43,.45);pointer-events:none}
+.core-top,.core-bottom{font:9px var(--mono);color:var(--muted)}
+.core-mark{font:700 92px/.8 var(--display);letter-spacing:-.13em;color:var(--red)}
+.core-mark span{color:var(--white)}
+.core-bottom{display:flex;justify-content:space-between}
+.floating-tag{position:absolute;z-index:3;background:var(--red);color:white;padding:12px 15px;font:10px var(--mono);right:0;bottom:60px;transform:rotate(7deg);box-shadow:8px 8px 0 #5a1117}
+.side-note{position:absolute;left:0;bottom:40px;writing-mode:vertical-rl;transform:rotate(180deg);font:9px var(--mono);color:var(--muted)}
+.scroll-cue{position:absolute;right:5%;bottom:32px;font:9px var(--mono);color:var(--muted)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* FRANJA */
+.ticker{overflow:hidden;background:var(--red);color:#fff;transform:rotate(-1.2deg) scale(1.02);margin:10px 0 30px}
+.ticker-track{display:flex;width:max-content;animation:marquee 28s linear infinite;padding:13px 0}
+.ticker span{font:700 15px var(--display);padding:0 22px;white-space:nowrap}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* SECCIONES */
+section.content-section{padding:115px 0}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:45px}
+.section-title{font:700 clamp(42px,6vw,78px)/.9 var(--display);letter-spacing:-.075em;text-transform:uppercase;margin-top:18px}
+.section-title em{font-style:normal;color:var(--red)}
+.section-note{max-width:280px;color:var(--muted);font-size:12px;line-height:1.7}
+
+/* PORTAFOLIO */
+.work{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:25px}
+.filter{background:transparent;border:1px solid var(--line);color:var(--muted);padding:9px 13px;font:9px var(--mono);text-transform:uppercase;transition:.25s}
+.filter.active,.filter:hover{background:var(--red);border-color:var(--red);color:white}
+.project-grid{display:grid;grid-template-columns:1.15fr .85fr 1fr;gap:16px;align-items:start}
+.project{min-width:0;cursor:pointer;transition:.4s}
+.project:nth-child(2){margin-top:75px}
+.project:nth-child(3){margin-top:25px}
+.project.hidden{display:none}
+.project-visual{height:360px;position:relative;overflow:hidden;background:var(--soft);border:1px solid var(--line)}
+.project:nth-child(2) .project-visual{height:285px}
+.project:nth-child(3) .project-visual{height:410px}
+.project-visual:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 35%,rgba(0,0,0,.4));z-index:1}
+.project-visual:after{content:"VIEW PROJECT ↗";position:absolute;z-index:3;right:15px;bottom:15px;background:white;color:#111;padding:10px 12px;font:9px var(--mono);transform:translateY(55px);transition:.35s}
+.project:hover .project-visual:after{transform:translateY(0)}
+.project:hover .poster-art{transform:scale(1.06) rotate(-2deg)}
+.poster-art{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:25px;transition:.6s;overflow:hidden}
+.poster-art small{font:9px var(--mono);letter-spacing:.15em;z-index:2}
+.poster-art strong{font:700 clamp(35px,5vw,66px)/.85 var(--display);letter-spacing:-.08em;text-transform:uppercase;z-index:2}
+.poster-art i{font:10px var(--mono);font-style:normal;z-index:2}
+.art-party{background:radial-gradient(circle at 70% 28%,#ffb000 0 4%,transparent 5%),radial-gradient(circle at 60% 45%,#ff303b,#62102b 42%,#171024 75%);color:white}
+.art-party:after{content:"";position:absolute;width:250px;height:250px;border:35px solid #ffffff22;border-radius:50%;right:-40px;top:55px}
+.art-sport{background:linear-gradient(145deg,#0069a8,#07304c 55%,#111);color:white}
+.art-sport:after{content:"";position:absolute;width:230px;height:230px;border:1px solid #fff8;border-radius:50%;right:-50px;top:20px;box-shadow:0 0 0 25px #ffffff12,0 0 0 50px #ffffff0a}
+.art-brand{background:linear-gradient(145deg,#ded4c4,#8f7968);color:#181512}
+.art-brand:after{content:"J";position:absolute;right:5px;bottom:-90px;font:700 360px/.8 var(--display);color:#17120f22}
+.art-web{background:linear-gradient(135deg,#e9e6df,#b5b1a8);color:#161616}
+.art-web:after{content:"";position:absolute;inset:18% 12%;border:1px solid #1118;box-shadow:12px 12px 0 var(--red)}
+.project-meta{display:flex;justify-content:space-between;gap:15px;padding:15px 1px 0;border-top:1px solid var(--line);margin-top:12px}
+.project-meta h3{font:600 16px var(--display)}
+.project-meta span{font:9px var(--mono);color:var(--muted);text-align:right}
+.project-number{font:10px var(--mono);color:var(--red);margin-bottom:8px}
+
+/* LABORATORIO */
+.lab-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:70px;align-items:center}
+.lab-copy p:not(.eyebrow){color:var(--muted);font-size:13px;line-height:1.8;max-width:410px;margin-top:22px}
+.lab-stage{min-height:410px;position:relative;background:var(--panel);border:1px solid var(--line);overflow:hidden;display:grid;place-items:center;perspective:900px;touch-action:pan-y}
+.lab-stage:before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:35px 35px}
+.shape{width:190px;height:190px;position:relative;z-index:2;transform-style:preserve-3d;transition:transform .15s}
+.shape-face{position:absolute;inset:0;border:1px solid #ff8990;background:linear-gradient(145deg,#ff303b,#8f0d19);display:grid;place-items:center;font:700 70px var(--display);color:white;box-shadow:inset 0 0 45px #0003}
+.shape-face:nth-child(1){transform:translateZ(95px)}
+.shape-face:nth-child(2){transform:rotateY(90deg) translateZ(95px)}
+.shape-face:nth-child(3){transform:rotateY(180deg) translateZ(95px)}
+.shape-face:nth-child(4){transform:rotateY(-90deg) translateZ(95px)}
+.shape-face:nth-child(5){transform:rotateX(90deg) translateZ(95px)}
+.shape-face:nth-child(6){transform:rotateX(-90deg) translateZ(95px)}
+.stage-label{position:absolute;left:18px;top:18px;font:9px var(--mono);color:var(--muted)}
+.stage-coord{position:absolute;right:18px;bottom:18px;font:9px var(--mono);color:var(--red)}
+.lab-controls{display:flex;gap:8px;margin-top:16px}
+.lab-controls button{border:1px solid var(--line);background:transparent;color:var(--muted);padding:9px 12px;font:9px var(--mono);text-transform:uppercase}
+.lab-controls button:hover{border-color:var(--red);color:var(--white)}
+
+/* SERVICIOS */
+.services{background:var(--white);color:var(--bg)}
+.services .eyebrow,.services .section-note{color:var(--muted)}
+.service-list{border-top:1px solid var(--line)}
+.service{display:grid;grid-template-columns:70px 1fr 1fr 35px;gap:20px;align-items:center;padding:25px 0;border-bottom:1px solid var(--line);transition:.3s}
+.service:hover{padding-left:12px;padding-right:12px}
+.service .index{font-size:10px;color:var(--red)}
+.service h3{font:600 clamp(20px,3vw,32px) var(--display)}
+.service p{font-size:12px;color:var(--muted);line-height:1.6;max-width:390px}
+.service .plus{font:25px var(--display);color:var(--red);text-align:right}
+
+/* SOBRE MÍ */
+.about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:75px;align-items:center}
+.about-portrait{min-height:480px;background:linear-gradient(145deg,var(--soft),var(--panel));border:1px solid var(--line);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.about-portrait:before{content:"";position:absolute;width:330px;height:330px;border:1px solid #ff303b88;border-radius:50%;box-shadow:0 0 0 35px #ff303b0d,0 0 0 70px #ff303b09}
+.portrait-letter{font:700 240px/.8 var(--display);letter-spacing:-.15em;color:var(--red);position:relative;text-shadow:12px 12px 0 #ffffff12}
+.portrait-caption{position:absolute;left:20px;right:20px;bottom:18px;display:flex;justify-content:space-between;font:9px var(--mono);color:var(--muted)}
+.about-copy>p:not(.eyebrow){color:var(--muted);font-size:13px;line-height:1.9;margin-top:18px}
+.stats{display:flex;gap:45px;margin:32px 0}
+.stat strong{display:block;font:700 46px var(--display);color:var(--red)}
+.stat span{font:9px var(--mono);color:var(--muted);text-transform:uppercase}
+.quote{border-left:2px solid var(--red);padding:5px 0 5px 18px;font:500 17px/1.5 var(--display);max-width:500px}
+
+/* CONTACTO */
+.contact{background:var(--panel);border-top:1px solid var(--line)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px}
+.contact .section-title{font-size:clamp(52px,7vw,92px)}
+.contact-intro{color:var(--muted);font-size:13px;line-height:1.8;max-width:400px;margin:24px 0}
+.contact-links{display:grid;gap:13px;margin-top:28px;font:11px var(--mono);color:var(--white)}
+.contact-links a:hover{color:var(--red)}
+.contact-form{display:grid;gap:13px}
+.contact-form input,.contact-form textarea{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--white);padding:16px;outline:none;font-size:12px}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--red)}
+.contact-form textarea{min-height:135px;resize:vertical}
+.contact-form button{justify-self:start}
+footer{padding:25px 0;border-top:1px solid var(--line);background:var(--bg)}
+.footer-row{display:flex;justify-content:space-between;gap:20px;align-items:center;color:var(--muted);font:9px var(--mono)}
+.footer-row strong{font:700 20px var(--display);color:var(--white)}
+.whatsapp{position:fixed;right:22px;bottom:22px;z-index:40;background:#20c96b;color:#082012;padding:13px 17px;font:10px var(--mono);box-shadow:0 10px 35px var(--shadow);transition:.3s}
+.whatsapp:hover{transform:translateY(-5px)}
+.reveal{opacity:0;transform:translateY(25px);transition:opacity .7s,transform .7s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.cursor-glow{position:fixed;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(242,30,43,.09),transparent 68%);pointer-events:none;z-index:1;transform:translate(-50%,-50%)}
+
+@media(max-width:1000px){
+ .navlinks{gap:13px}
+ .nav-cta{display:none}
+ .nav{gap:12px}
+ .brand small{display:none}
+}
+@media(max-width:900px){
+ .wrap{width:min(100% - 42px,700px)}
+ .hero-grid{grid-template-columns:1fr .8fr;gap:10px}
+ .hero h1{font-size:clamp(60px,10vw,100px)}
+ .hero-art{transform:scale(.82)}
+ .project-grid{grid-template-columns:1fr 1fr}
+ .project:nth-child(2){margin-top:75px}
+ .project:nth-child(3){display:none}
+ .lab-grid,.about-grid{gap:35px}
+ .service{grid-template-columns:45px 1fr 1fr 25px}
+}
+@media(max-width:650px){
+ .wrap{width:calc(100% - 36px)}
+ .topbar{height:66px}
+ .menu-btn{display:block}
+ .nav-actions{gap:6px}
+ .round-control{width:37px;height:37px}
+ .navlinks{position:absolute;top:66px;left:0;right:0;background:var(--panel);border-bottom:1px solid var(--line);padding:18px;display:grid;gap:0;transform:translateY(-10px);opacity:0;visibility:hidden;transition:.25s}
+ .navlinks.open{transform:translateY(0);opacity:1;visibility:visible}
+ .navlinks a{padding:14px 4px;border-bottom:1px solid var(--line)}
+ .hero{padding:65px 0 55px;min-height:0}
+ .hero-grid{grid-template-columns:1fr;gap:0}
+ .hero h1{font-size:clamp(62px,17vw,100px);margin:28px 0}
+ .hero-desc{font-size:13px}
+ .hero-art{height:340px;transform:none;margin-top:15px}
+ .orbit{width:280px;height:280px}
+ .core{width:185px;height:235px}
+ .core-mark{font-size:70px}
+ .floating-tag{right:4px;bottom:35px}
+ .side-note{display:none}
+ .scroll-cue{right:0;bottom:12px}
+ .ticker{margin:0 0 10px}
+ .ticker span{font-size:12px}
+ section.content-section{padding:78px 0}
+ .section-head{display:block;margin-bottom:30px}
+ .section-note{margin-top:18px}
+ .project-grid{grid-template-columns:1fr;gap:28px}
+ .project:nth-child(2),.project:nth-child(3){margin-top:0;display:block}
+ .project-visual,.project:nth-child(2) .project-visual,.project:nth-child(3) .project-visual{height:340px}
+ .lab-grid,.about-grid,.contact-grid{grid-template-columns:1fr;gap:35px}
+ .lab-stage{min-height:340px}
+ .shape{transform:scale(.78)}
+ .service{grid-template-columns:35px 1fr 22px;gap:10px;padding:20px 0}
+ .service p{grid-column:2;grid-row:2}
+ .service .plus{grid-column:3;grid-row:1}
+ .about-portrait{min-height:360px}
+ .portrait-letter{font-size:190px}
+ .stats{gap:28px}
+ .stat strong{font-size:38px}
+ .contact-grid{gap:40px}
+ .footer-row{flex-direction:column;align-items:flex-start}
+ .whatsapp{right:12px;bottom:12px;padding:12px;font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<header class="topbar">
+ <div class="wrap nav">
+  <a class="brand" href="#inicio">JOSSIE<span>®</span><small>CREATIVE LAB</small></a>
+
+  <nav class="navlinks" id="navlinks">
+   <a href="#inicio" data-i18n="navHome">Inicio</a>
+   <a href="#proyectos" data-i18n="navWork">Proyectos</a>
+   <a href="#laboratorio" data-i18n="navLab">Experimentos</a>
+   <a href="#servicios" data-i18n="navServices">Servicios</a>
+   <a href="#sobre-mi" data-i18n="navAbout">Sobre mí</a>
+   <a href="#contacto" data-i18n="navContact">Contacto</a>
+  </nav>
+
+  <div class="nav-actions">
+   <button class="round-control lang-control" id="langBtn" aria-label="Change language">ES</button>
+
+   <button class="round-control" id="themeBtn" aria-label="Cambiar tema">
+    <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M20.5 15.2A8.5 8.5 0 0 1 8.8 3.5 8.5 8.5 0 1 0 20.5 15.2Z"/>
+    </svg>
+   </button>
+
+   <a class="nav-cta" href="#contacto" data-i18n="navCTA">INICIAR PROYECTO ↗</a>
+  </div>
+
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false">☰</button>
+ </div>
+</header>
+
+<main>
+
+<!-- INICIO -->
+<section class="hero" id="inicio">
+ <span class="side-note" data-i18n="sideNote">DISEÑO · TECNOLOGÍA · IDEAS</span>
+
+ <div class="wrap hero-grid">
+  <div class="hero-copy">
+   <p class="eyebrow" data-i18n="heroEyebrow">Diseñador hipermedia / creativo digital</p>
+
+   <h1>
+    <span class="line" data-i18n="heroLine1">Pienso.</span>
+    <span class="line outline" data-i18n="heroLine2">Diseño.</span>
+    <span class="line red" data-i18n="heroLine3">Transformo<span style="color:var(--white)">.</span></span>
+   </h1>
+
+   <p class="hero-desc" data-i18n="heroDesc">No diseño para llenar espacios. Creo identidades, interfaces y experiencias digitales que tienen algo que decir y una forma propia de hacerlo.</p>
+
+   <div class="hero-actions">
+    <a class="btn primary" href="#proyectos"><span data-i18n="explore">Explorar proyectos</span><span class="arrow">↘</span></a>
+    <a class="btn" href="#sobre-mi"><span data-i18n="knowMe">Conocer mi enfoque</span><span class="arrow">↗</span></a>
+   </div>
+  </div>
+
+  <div class="hero-art">
+   <div class="orbit"><span class="orbit-dot"></span></div>
+   <div class="core">
+    <div class="core-top">JOSSIE® / LAB 001</div>
+    <div class="core-mark">J<span>.</span><br>A</div>
+    <div class="core-bottom"><span>CREATIVE<br>DEPARTMENT</span><span>2026</span></div>
+   </div>
+   <div class="floating-tag" data-i18n="floatingTag">IDEAS EN MOVIMIENTO ↗</div>
+  </div>
+ </div>
+
+ <span class="scroll-cue" data-i18n="scroll">DESLIZA PARA EXPLORAR ↓</span>
+</section>
+
+<!-- FRANJA -->
+<div class="ticker">
+ <div class="ticker-track">
+  <span data-i18n="ticker">IDENTIDAD VISUAL ✳ DISEÑO DIGITAL ✳ EXPERIENCIAS HIPERMEDIA ✳ MOTION DESIGN ✳ BRANDING ✳ UX / UI ✳</span>
+  <span data-i18n="ticker">IDENTIDAD VISUAL ✳ DISEÑO DIGITAL ✳ EXPERIENCIAS HIPERMEDIA ✳ MOTION DESIGN ✳ BRANDING ✳ UX / UI ✳</span>
+ </div>
+</div>
+
+<!-- PROYECTOS -->
+<section class="content-section work" id="proyectos">
+ <div class="wrap">
+  <div class="section-head reveal">
+   <div>
+    <p class="eyebrow" data-i18n="workEyebrow">Selección de trabajos / 001—004</p>
+    <h2 class="section-title"><span data-i18n="workTitle1">Ideas que</span><br><em data-i18n="workTitle2">toman forma.</em></h2>
+   </div>
+   <p class="section-note" data-i18n="workDesc">Cada proyecto es un territorio distinto: una historia, una identidad o una experiencia por descubrir.</p>
+  </div>
+
+  <div class="filters reveal">
+   <button class="filter active" data-filter="all" data-i18n="filterAll">Todo</button>
+   <button class="filter" data-filter="grafico" data-i18n="filterGraphic">Diseño gráfico</button>
+   <button class="filter" data-filter="marca" data-i18n="filterBrand">Branding</button>
+   <button class="filter" data-filter="digital" data-i18n="filterDigital">Digital / web</button>
+  </div>
+
+  <div class="project-grid">
+
+   <article class="project reveal" data-category="grafico">
+    <div class="project-visual">
+     <div class="poster-art art-party">
+      <small>JOSSIE® / CAMPAÑA 001</small>
+      <strong data-i18n="project1Art">La noche<br>es nuestra.</strong>
+      <i data-i18n="project1Type">EVENTO · DIRECCIÓN DE ARTE</i>
+     </div>
+    </div>
+    <div class="project-meta">
+     <div><p class="project-number">01 / CAMPAÑA</p><h3 data-i18n="project1">La noche es nuestra</h3></div>
+     <span data-i18n="graphicDesign">DISEÑO GRÁFICO</span>
+    </div>
+   </article>
+
+   <article class="project reveal" data-category="grafico">
+    <div class="project-visual">
+     <div class="poster-art art-sport">
+      <small>VISUAL SYSTEM / 002</small>
+      <strong>Game<br>on.</strong>
+      <i data-i18n="project2Type">DEPORTE · COMUNICACIÓN VISUAL</i>
+     </div>
+    </div>
+    <div class="project-meta">
+     <div><p class="project-number">02 / VISUAL</p><h3>Game on</h3></div>
+     <span data-i18n="sportsDesign">DISEÑO DEPORTIVO</span>
+    </div>
+   </article>
+
+   <article class="project reveal" data-category="marca">
+    <div class="project-visual">
+     <div class="poster-art art-brand">
+      <small>IDENTIDAD / 003</small>
+      <strong>Brand<br>your story.</strong>
+      <i data-i18n="project3Type">MARCA · CONCEPTO VISUAL</i>
+     </div>
+    </div>
+    <div class="project-meta">
+     <div><p class="project-number">03 / BRANDING</p><h3>Brand your story</h3></div>
+     <span>BRANDING</span>
+    </div>
+   </article>
+
+   <article class="project reveal" data-category="digital">
+    <div class="project-visual">
+     <div class="poster-art art-web">
+      <small>INTERACTIVE / 004</small>
+      <strong>Digital<br>worlds.</strong>
+      <i data-i18n="project4Type">WEB · INTERFAZ · EXPERIENCIA</i>
+     </div>
+    </div>
+    <div class="project-meta">
+     <div><p class="project-number">04 / DIGITAL</p><h3>Digital worlds</h3></div>
+     <span>WEB DESIGN</span>
+    </div>
+   </article>
+
+  </div>
+ </div>
+</section>
+
+<!-- LABORATORIO -->
+<section class="content-section" id="laboratorio">
+ <div class="wrap lab-grid">
+  <div class="lab-copy reveal">
+   <p class="eyebrow" data-i18n="labEyebrow">Zona experimental / 3D interactivo</p>
+   <h2 class="section-title"><span data-i18n="labTitle1">El diseño</span><br><span data-i18n="labTitle2">también se</span><br><em data-i18n="labTitle3">explora.</em></h2>
+   <p data-i18n="labDesc">Este espacio es un pequeño laboratorio visual. Mueve el cursor sobre la escena y observa cómo responde el objeto. La interacción también hace parte del lenguaje del diseño.</p>
+   <div class="lab-controls">
+    <button id="spinBtn" data-i18n="pauseSpin">Pausar giro</button>
+    <button id="resetBtn" data-i18n="reset">Reiniciar</button>
+   </div>
+  </div>
+
+  <div class="reveal">
+   <div class="lab-stage" id="labStage">
+    <span class="stage-label" data-i18n="stageLabel">OBJETO 3D / INTERACCIÓN EN TIEMPO REAL</span>
+    <div class="shape" id="shape">
+     <div class="shape-face">J</div>
+     <div class="shape-face">UX</div>
+     <div class="shape-face">3D</div>
+     <div class="shape-face">UI</div>
+     <div class="shape-face">WEB</div>
+     <div class="shape-face">✳</div>
+    </div>
+    <span class="stage-coord" data-i18n="stageCoord">MOVE YOUR CURSOR ↗</span>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="content-section services" id="servicios">
+ <div class="wrap">
+  <div class="section-head reveal">
+   <div>
+    <p class="eyebrow" data-i18n="servicesEyebrow">Lo que puedo crear contigo</p>
+    <h2 class="section-title"><span data-i18n="servicesTitle1">Ideas con</span><br><em data-i18n="servicesTitle2">dirección.</em></h2>
+   </div>
+   <p class="section-note" data-i18n="servicesDesc">Del concepto a la pantalla: soluciones visuales pensadas para comunicar y conectar.</p>
+  </div>
+
+  <div class="service-list">
+   <article class="service reveal">
+    <span class="index">01 /</span>
+    <h3 data-i18n="service1">Identidad visual & branding</h3>
+    <p data-i18n="service1Desc">Logotipos, sistemas gráficos y universos visuales para marcas con personalidad.</p>
+    <span class="plus">↗</span>
+   </article>
+   <article class="service reveal">
+    <span class="index">02 /</span>
+    <h3 data-i18n="service2">Diseño gráfico</h3>
+    <p data-i18n="service2Desc">Flyers, piezas promocionales, campañas y contenido visual para medios digitales.</p>
+    <span class="plus">↗</span>
+   </article>
+   <article class="service reveal">
+    <span class="index">03 /</span>
+    <h3 data-i18n="service3">Diseño web & UX/UI</h3>
+    <p data-i18n="service3Desc">Interfaces claras, prototipos y páginas web que combinan estética y facilidad de uso.</p>
+    <span class="plus">↗</span>
+   </article>
+   <article class="service reveal">
+    <span class="index">04 /</span>
+    <h3 data-i18n="service4">Motion & experiencias</h3>
+    <p data-i18n="service4Desc">Animación, narrativas interactivas y experiencias hipermedia que invitan a explorar.</p>
+    <span class="plus">↗</span>
+   </article>
+  </div>
+ </div>
+</section>
+
+<!-- SOBRE MÍ -->
+<section class="content-section" id="sobre-mi">
+ <div class="wrap about-grid">
+  <div class="about-portrait reveal">
+   <div class="portrait-letter">J.</div>
+   <div class="portrait-caption">
+    <span>JOSSIE ACUÑA</span>
+    <span>CREATIVE PROFILE / 2026</span>
+   </div>
+  </div>
+
+  <div class="about-copy reveal">
+   <p class="eyebrow" data-i18n="aboutEyebrow">Detrás de cada pantalla hay una idea</p>
+   <h2 class="section-title"><span data-i18n="aboutTitle1">Diseñador</span><br><span data-i18n="aboutTitle2">por curiosidad.</span><br><em data-i18n="aboutTitle3">Creador por pasión.</em></h2>
+
+   <p data-i18n="aboutDesc1">Soy diseñador hipermedia y creativo digital. Me interesa explorar cómo se conectan el diseño gráfico, la tecnología y la comunicación para construir experiencias que tengan sentido.</p>
+
+   <p data-i18n="aboutDesc2">Disfruto aprender herramientas nuevas, experimentar con interfaces y convertir ideas en propuestas visuales. Para mí, diseñar no es solo hacer que algo se vea bien: es encontrar la mejor manera de contar algo.</p>
+
+   <div class="stats">
+    <div class="stat"><strong>∞</strong><span data-i18n="stat1">Ideas por explorar</span></div>
+    <div class="stat"><strong>01</strong><span data-i18n="stat2">Universo creativo</span></div>
+    <div class="stat"><strong>100%</strong><span data-i18n="stat3">Curiosidad</span></div>
+   </div>
+
+   <div class="quote" data-i18n="quote">“La creatividad empieza cuando dejamos de hacer siempre lo mismo.”</div>
+  </div>
+ </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="content-section contact" id="contacto">
+ <div class="wrap contact-grid">
+  <div class="reveal">
+   <p class="eyebrow" data-i18n="contactEyebrow">Tu idea puede ser el próximo proyecto</p>
+   <h2 class="section-title"><span data-i18n="contactTitle1">Hagamos</span><br><span data-i18n="contactTitle2">algo</span> <em data-i18n="contactTitle3">único.</em></h2>
+   <p class="contact-intro" data-i18n="contactDesc">Cuéntame qué tienes en mente. Podemos darle forma a una marca, una pieza visual o una experiencia digital.</p>
+
+   <div class="contact-links">
+    <!-- REEMPLAZA ESTOS DATOS POR LOS TUYOS -->
+    <a href="mailto:Jossie202077@gmail.com">✉ &nbsp; Jossie202077@gmail.com</a>
+    <a href="https://www.instagram.com/jossieac123/" target="_blank">◎ &nbsp; INSTAGRAM</a>
+   </div>
+  </div>
+
+  <form class="contact-form reveal" id="contactForm">
+   <input type="text" id="name" data-i18n-placeholder="formName" placeholder="Tu nombre" required>
+   <input type="email" id="email" data-i18n-placeholder="formEmail" placeholder="Tu correo electrónico" required>
+   <input type="text" id="service" data-i18n-placeholder="formService" placeholder="¿Qué necesitas? (branding, web, flyer...)" required>
+   <textarea id="message" data-i18n-placeholder="formMessage" placeholder="Cuéntame un poco sobre tu idea..." required></textarea>
+   <button class="btn primary" type="submit"><span data-i18n="formSend">Enviar propuesta</span><span class="arrow">↗</span></button>
+  </form>
+ </div>
+</section>
+
+</main>
+
+<footer>
+ <div class="wrap footer-row">
+  <strong>JOSSIE®</strong>
+  <span data-i18n="footer1">DISEÑO HIPERMEDIA · CREATIVE LAB</span>
+  <span>© 2026 / <span data-i18n="footer2">HECHO CON CURIOSIDAD</span></span>
+  <a href="#inicio" data-i18n="backTop">VOLVER ARRIBA ↑</a>
+ </div>
+</footer>
+
+<!-- REEMPLAZA 57TU_NUMERO POR TU WHATSAPP CON CÓDIGO DE PAÍS -->
+<a class="whatsapp" href="https://wa.me/qr/KO3BZAVYKWENK1" target="_blank" data-i18n="whatsapp">WHATSAPP ↗</a>
+
+<script>
+// ======================================
+// TRADUCCIONES ESPAÑOL / INGLÉS
+// ======================================
+
+const translations = {
+ es: {
+  navHome:"Inicio",
+  navWork:"Proyectos",
+  navLab:"Experimentos",
+  navServices:"Servicios",
+  navAbout:"Sobre mí",
+  navContact:"Contacto",
+  navCTA:"INICIAR PROYECTO ↗",
+  sideNote:"DISEÑO · TECNOLOGÍA · IDEAS",
+  heroEyebrow:"Diseñador hipermedia / creativo digital",
+  heroLine1:"Pienso.",
+  heroLine2:"Diseño.",
+  heroLine3:"Transformo.",
+  heroDesc:"No diseño para llenar espacios. Creo identidades, interfaces y experiencias digitales que tienen algo que decir y una forma propia de hacerlo.",
+  explore:"Explorar proyectos",
+  knowMe:"Conocer mi enfoque",
+  floatingTag:"IDEAS EN MOVIMIENTO ↗",
+  scroll:"DESLIZA PARA EXPLORAR ↓",
+  ticker:"IDENTIDAD VISUAL ✳ DISEÑO DIGITAL ✳ EXPERIENCIAS HIPERMEDIA ✳ MOTION DESIGN ✳ BRANDING ✳ UX / UI ✳",
+  workEyebrow:"Selección de trabajos / 001—004",
+  workTitle1:"Ideas que",
+  workTitle2:"toman forma.",
+  workDesc:"Cada proyecto es un territorio distinto: una historia, una identidad o una experiencia por descubrir.",
+  filterAll:"Todo",
+  filterGraphic:"Diseño gráfico",
+  filterBrand:"Branding",
+  filterDigital:"Digital / web",
+  project1Art:"La noche<br>es nuestra.",
+  project1Type:"EVENTO · DIRECCIÓN DE ARTE",
+  project1:"La noche es nuestra",
+  graphicDesign:"DISEÑO GRÁFICO",
+  project2Type:"DEPORTE · COMUNICACIÓN VISUAL",
+  sportsDesign:"DISEÑO DEPORTIVO",
+  project3Type:"MARCA · CONCEPTO VISUAL",
+  project4Type:"WEB · INTERFAZ · EXPERIENCIA",
+  labEyebrow:"Zona experimental / 3D interactivo",
+  labTitle1:"El diseño",
+  labTitle2:"también se",
+  labTitle3:"explora.",
+  labDesc:"Este espacio es un pequeño laboratorio visual. Mueve el cursor sobre la escena y observa cómo responde el objeto. La interacción también hace parte del lenguaje del diseño.",
+  pauseSpin:"Pausar giro",
+  playSpin:"Activar giro",
+  reset:"Reiniciar",
+  stageLabel:"OBJETO 3D / INTERACCIÓN EN TIEMPO REAL",
+  stageCoord:"MUEVE TU CURSOR ↗",
+  servicesEyebrow:"Lo que puedo crear contigo",
+  servicesTitle1:"Ideas con",
+  servicesTitle2:"dirección.",
+  servicesDesc:"Del concepto a la pantalla: soluciones visuales pensadas para comunicar y conectar.",
+  service1:"Identidad visual & branding",
+  service1Desc:"Logotipos, sistemas gráficos y universos visuales para marcas con personalidad.",
+  service2:"Diseño gráfico",
+  service2Desc:"Flyers, piezas promocionales, campañas y contenido visual para medios digitales.",
+  service3:"Diseño web & UX/UI",
+  service3Desc:"Interfaces claras, prototipos y páginas web que combinan estética y facilidad de uso.",
+  service4:"Motion & experiencias",
+  service4Desc:"Animación, narrativas interactivas y experiencias hipermedia que invitan a explorar.",
+  aboutEyebrow:"Detrás de cada pantalla hay una idea",
+  aboutTitle1:"Diseñador",
+  aboutTitle2:"por curiosidad.",
+  aboutTitle3:"Creador por pasión.",
+  aboutDesc1:"Soy diseñador hipermedia y creativo digital. Me interesa explorar cómo se conectan el diseño gráfico, la tecnología y la comunicación para construir experiencias que tengan sentido.",
+  aboutDesc2:"Disfruto aprender herramientas nuevas, experimentar con interfaces y convertir ideas en propuestas visuales. Para mí, diseñar no es solo hacer que algo se vea bien: es encontrar la mejor manera de contar algo.",
+  stat1:"Ideas por explorar",
+  stat2:"Universo creativo",
+  stat3:"Curiosidad",
+  quote:"“La creatividad empieza cuando dejamos de hacer siempre lo mismo.”",
+  contactEyebrow:"Tu idea puede ser el próximo proyecto",
+  contactTitle1:"Hagamos",
+  contactTitle2:"algo",
+  contactTitle3:"único.",
+  contactDesc:"Cuéntame qué tienes en mente. Podemos darle forma a una marca, una pieza visual o una experiencia digital.",
+  formName:"Tu nombre",
+  formEmail:"Tu correo electrónico",
+  formService:"¿Qué necesitas? (branding, web, flyer...)",
+  formMessage:"Cuéntame un poco sobre tu idea...",
+  formSend:"Enviar propuesta",
+  footer1:"DISEÑO HIPERMEDIA · CREATIVE LAB",
+  footer2:"HECHO CON CURIOSIDAD",
+  backTop:"VOLVER ARRIBA ↑",
+  whatsapp:"WHATSAPP ↗",
+  emailSubject:"Nuevo proyecto desde el portafolio",
+  emailGreeting:"Hola Jossie",
+  emailName:"Nombre",
+  emailAddress:"Correo",
+  emailService:"Servicio",
+  emailIdea:"Idea"
+ },
+
+ en: {
+  navHome:"Home",
+  navWork:"Projects",
+  navLab:"Experiments",
+  navServices:"Services",
+  navAbout:"About me",
+  navContact:"Contact",
+  navCTA:"START A PROJECT ↗",
+  sideNote:"DESIGN · TECHNOLOGY · IDEAS",
+  heroEyebrow:"Hypermedia designer / digital creative",
+  heroLine1:"I think.",
+  heroLine2:"I design.",
+  heroLine3:"I transform.",
+  heroDesc:"I don't design just to fill spaces. I create identities, interfaces and digital experiences with a message and a distinctive way of expressing it.",
+  explore:"Explore projects",
+  knowMe:"Discover my approach",
+  floatingTag:"IDEAS IN MOTION ↗",
+  scroll:"SCROLL TO EXPLORE ↓",
+  ticker:"VISUAL IDENTITY ✳ DIGITAL DESIGN ✳ HYPERMEDIA EXPERIENCES ✳ MOTION DESIGN ✳ BRANDING ✳ UX / UI ✳",
+  workEyebrow:"Selected work / 001—004",
+  workTitle1:"Ideas that",
+  workTitle2:"take shape.",
+  workDesc:"Every project is a different territory: a story, an identity or an experience waiting to be discovered.",
+  filterAll:"All",
+  filterGraphic:"Graphic design",
+  filterBrand:"Branding",
+  filterDigital:"Digital / web",
+  project1Art:"The night<br>is ours.",
+  project1Type:"EVENT · ART DIRECTION",
+  project1:"The night is ours",
+  graphicDesign:"GRAPHIC DESIGN",
+  project2Type:"SPORTS · VISUAL COMMUNICATION",
+  sportsDesign:"SPORTS DESIGN",
+  project3Type:"BRAND · VISUAL CONCEPT",
+  project4Type:"WEB · INTERFACE · EXPERIENCE",
+  labEyebrow:"Experimental zone / Interactive 3D",
+  labTitle1:"Design",
+  labTitle2:"is also",
+  labTitle3:"exploration.",
+  labDesc:"This space is a small visual laboratory. Move your cursor over the scene and watch how the object responds. Interaction is also part of the language of design.",
+  pauseSpin:"Pause rotation",
+  playSpin:"Start rotation",
+  reset:"Reset",
+  stageLabel:"3D OBJECT / REAL-TIME INTERACTION",
+  stageCoord:"MOVE YOUR CURSOR ↗",
+  servicesEyebrow:"What I can create with you",
+  servicesTitle1:"Ideas with",
+  servicesTitle2:"direction.",
+  servicesDesc:"From concept to screen: visual solutions designed to communicate and connect.",
+  service1:"Visual identity & branding",
+  service1Desc:"Logos, graphic systems and visual worlds for brands with personality.",
+  service2:"Graphic design",
+  service2Desc:"Flyers, promotional pieces, campaigns and visual content for digital media.",
+  service3:"Web design & UX/UI",
+  service3Desc:"Clear interfaces, prototypes and websites combining aesthetics and usability.",
+  service4:"Motion & experiences",
+  service4Desc:"Animation, interactive storytelling and hypermedia experiences that invite exploration.",
+  aboutEyebrow:"Behind every screen, there's an idea",
+  aboutTitle1:"Designer",
+  aboutTitle2:"by curiosity.",
+  aboutTitle3:"Creator by passion.",
+  aboutDesc1:"I'm a hypermedia designer and digital creative. I'm interested in exploring how graphic design, technology and communication come together to build meaningful experiences.",
+  aboutDesc2:"I enjoy learning new tools, experimenting with interfaces and turning ideas into visual concepts. To me, design isn't just about making things look good: it's about finding the best way to tell a story.",
+  stat1:"Ideas to explore",
+  stat2:"Creative universe",
+  stat3:"Curiosity",
+  quote:"“Creativity begins when we stop doing the same things over and over.”",
+  contactEyebrow:"Your idea could be the next project",
+  contactTitle1:"Let's make",
+  contactTitle2:"something",
+  contactTitle3:"unique.",
+  contactDesc:"Tell me what you have in mind. We can shape a brand, a visual piece or a digital experience.",
+  formName:"Your name",
+  formEmail:"Your email address",
+  formService:"What do you need? (branding, web, flyer...)",
+  formMessage:"Tell me a little about your idea...",
+  formSend:"Send inquiry",
+  footer1:"HYPERMEDIA DESIGN · CREATIVE LAB",
+  footer2:"MADE WITH CURIOSITY",
+  backTop:"BACK TO TOP ↑",
+  whatsapp:"WHATSAPP ↗",
+  emailSubject:"New project from portfolio",
+  emailGreeting:"Hi Jossie",
+  emailName:"Name",
+  emailAddress:"Email",
+  emailService:"Service",
+  emailIdea:"Idea"
+ }
+};
+
+// ======================================
+// CAMBIO DE IDIOMA
+// ======================================
+
+let currentLang="es";
+const langBtn=document.getElementById("langBtn");
+
+function changeLanguage(lang){
+ currentLang=lang;
+ document.documentElement.lang=lang;
+ langBtn.textContent=lang.toUpperCase();
+
+ document.querySelectorAll("[data-i18n]").forEach(element=>{
+  const key=element.dataset.i18n;
+  if(translations[lang][key]!==undefined){
+   element.innerHTML=translations[lang][key];
+  }
+ });
+
+ document.querySelectorAll("[data-i18n-placeholder]").forEach(element=>{
+  const key=element.dataset.i18nPlaceholder;
+  if(translations[lang][key]!==undefined){
+   element.placeholder=translations[lang][key];
+  }
+ });
+
+ document.getElementById("spinBtn").textContent=
+  autoSpin ? translations[lang].pauseSpin : translations[lang].playSpin;
+
+}
+
+langBtn.addEventListener("click",()=>{
+ changeLanguage(currentLang==="es"?"en":"es");
+});
+
+// ======================================
+// MODO CLARO Y MODO OSCURO
+// ======================================
+
+const themeBtn=document.getElementById("themeBtn");
+const themeIcon=document.getElementById("themeIcon");
+const root=document.documentElement;
+
+function setTheme(theme){
+ root.dataset.theme=theme;
+
+ if(theme==="dark"){
+  themeIcon.innerHTML=`
+   <path d="M20.5 15.2A8.5 8.5 0 0 1 8.8 3.5 8.5 8.5 0 1 0 20.5 15.2Z"/>
+  `;
+ }else{
+  themeIcon.innerHTML=`
+   <circle cx="12" cy="12" r="4"/>
+   <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/>
+  `;
+ }
+
+ localStorage.setItem("jossie-theme",theme);
+}
+
+const savedTheme=localStorage.getItem("jossie-theme")||"dark";
+setTheme(savedTheme);
+
+themeBtn.addEventListener("click",()=>{
+ const newTheme=root.dataset.theme==="dark"?"light":"dark";
+ setTheme(newTheme);
+});
+
+// ======================================
+// MENÚ PARA CELULARES
+// ======================================
+
+const menuBtn=document.getElementById("menuBtn");
+const navlinks=document.getElementById("navlinks");
+
+menuBtn.addEventListener("click",()=>{
+ const open=navlinks.classList.toggle("open");
+ menuBtn.setAttribute("aria-expanded",String(open));
+ menuBtn.textContent=open?"✕":"☰";
+});
+
+navlinks.querySelectorAll("a").forEach(a=>{
+ a.addEventListener("click",()=>{
+  navlinks.classList.remove("open");
+  menuBtn.setAttribute("aria-expanded","false");
+  menuBtn.textContent="☰";
+ });
+});
+
+// ======================================
+// FILTROS DE PROYECTOS
+// ======================================
+
+const filters=document.querySelectorAll(".filter");
+const projects=document.querySelectorAll(".project");
+
+filters.forEach(button=>{
+ button.addEventListener("click",()=>{
+  filters.forEach(f=>f.classList.remove("active"));
+  button.classList.add("active");
+
+  const filter=button.dataset.filter;
+
+  projects.forEach(project=>{
+   project.classList.toggle(
+    "hidden",
+    filter!=="all" && project.dataset.category!==filter
+   );
+  });
+ });
+});
+
+// ======================================
+// OBJETO 3D INTERACTIVO
+// ======================================
+
+const stage=document.getElementById("labStage");
+const shape=document.getElementById("shape");
+const spinBtn=document.getElementById("spinBtn");
+const resetBtn=document.getElementById("resetBtn");
+
+let rotationX=-22;
+let rotationY=32;
+let autoSpin=true;
+let dragging=false;
+let lastX=0;
+let lastY=0;
+
+function renderShape(){
+ shape.style.transform=`rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+}
+renderShape();
+
+stage.addEventListener("pointermove",e=>{
+ if(dragging){
+  rotationY+=(e.clientX-lastX)*.8;
+  rotationX-=(e.clientY-lastY)*.8;
+  lastX=e.clientX;
+  lastY=e.clientY;
+ }else if(e.pointerType==="mouse"){
+  const rect=stage.getBoundingClientRect();
+  rotationY=32+((e.clientX-rect.left)/rect.width-.5)*65;
+  rotationX=-22-((e.clientY-rect.top)/rect.height-.5)*55;
+ }
+ renderShape();
+});
+
+stage.addEventListener("pointerdown",e=>{
+ dragging=true;
+ lastX=e.clientX;
+ lastY=e.clientY;
+ stage.setPointerCapture(e.pointerId);
+});
+
+stage.addEventListener("pointerup",()=>dragging=false);
+stage.addEventListener("pointercancel",()=>dragging=false);
+
+spinBtn.addEventListener("click",()=>{
+ autoSpin=!autoSpin;
+ spinBtn.textContent=autoSpin?
+  translations[currentLang].pauseSpin:
+  translations[currentLang].playSpin;
+});
+
+resetBtn.addEventListener("click",()=>{
+ rotationX=-22;
+ rotationY=32;
+ renderShape();
+});
+
+function animate(){
+ if(autoSpin&&!dragging){
+  rotationY+=.18;
+  renderShape();
+ }
+ requestAnimationFrame(animate);
+}
+animate();
+
+// ======================================
+// ANIMACIONES AL DESPLAZARSE
+// ======================================
+
+const observer=new IntersectionObserver(entries=>{
+ entries.forEach(entry=>{
+  if(entry.isIntersecting){
+   entry.target.classList.add("visible");
+   observer.unobserve(entry.target);
+  }
+ });
+},{threshold:.12});
+
+document.querySelectorAll(".reveal").forEach(el=>{
+ observer.observe(el);
+});
+
+// ======================================
+// LUZ QUE SIGUE EL CURSOR
+// ======================================
+
+const glow=document.getElementById("cursorGlow");
+
+window.addEventListener("pointermove",e=>{
+ if(e.pointerType==="mouse"){
+  glow.style.left=e.clientX+"px";
+  glow.style.top=e.clientY+"px";
+ }
+});
+
+// ======================================
+// FORMULARIO DE CONTACTO
+// ======================================
+// Abre el programa de correo del visitante.
+// Cambia Jossie202077@gmail.com por tu correo real.
+
+document.getElementById("contactForm").addEventListener("submit",e=>{
+ e.preventDefault();
+
+ const name=document.getElementById("name").value.trim();
+ const email=document.getElementById("email").value.trim();
+ const service=document.getElementById("service").value.trim();
+ const message=document.getElementById("message").value.trim();
+
+ const t=translations[currentLang];
+
+ const subject=encodeURIComponent(t.emailSubject+" - "+name);
+
+ const body=encodeURIComponent(
+  `${t.emailGreeting},\n\n${t.emailName}: ${name}\n${t.emailAddress}: ${email}\n${t.emailService}: ${service}\n\n${t.emailIdea}:\n${message}`
+ );
+
+ window.location.href=
+  `mailto:Jossie202077@gmail.com?subject=${subject}&body=${body}`;
+});
+</script>
+
+</body>
+</html>
+
